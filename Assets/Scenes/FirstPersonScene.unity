@@ -246,6 +246,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1594063483 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4295661480817382250, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
+  m_PrefabInstance: {fileID: 7240194473931020659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1594063484 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 2329043106969075966, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
+  m_PrefabInstance: {fileID: 7240194473931020659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1594063488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594063483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a513ef736b92f14bcbec61f82728c356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JetpackComponent
+  Boost: 0.5
+  FuelDuration: 1
+  RecharcheWaitTime: 0.5
+  RechargeTime: 0.5
+  Body: {fileID: 1594063484}
 --- !u!1 &1770435075
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +597,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4295661480817382250, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1594063488}
   m_SourcePrefab: {fileID: 100100000, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

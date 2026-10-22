@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform CameraTransform;
     [SerializeField] private Rigidbody Rb;
 
-    private _InputActions Input;
+    public _InputActions Input;
 
     [Header("Settings")]
     [SerializeField] private float sensitivity = 1;
@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         //needed to follow the anch pos
         FeetCast.origin = transform.position;
         FeetCast.direction = Vector3.down;
-        if (isGrounded) Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, 20, Rb.linearVelocity.z);
+        if (isGrounded) Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, 2, Rb.linearVelocity.z);
     }
     private void Grab(InputAction.CallbackContext ctx)
     {
