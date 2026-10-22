@@ -17,15 +17,24 @@ public class PlayerMovement : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float sensitivity = 1;
     [SerializeField] private float WalkSpeed = 5;
-    [SerializeField] private float SprintMultiplier = 1;
     [SerializeField] private float GrabDistance = 5;
     [SerializeField] private float HoldDistance = 2f; 
     [SerializeField] private float PullStrength = 15f;
     [SerializeField] private float MaxPullSpeed = 20f;
+
+    [Header("Directional speed")]
+    [SerializeField] private float SprintMultiplier = 1;
+    [SerializeField] private float ForwardMultiplier = 1f;
+    [SerializeField] private float SideMultiplier = 0.75f;
+    [SerializeField] private float BackwardMultiplier = 0.5f;
+    [SerializeField] private float AirMultiplier = 0.5f;
+
+
     private bool IsSprinting;
     private Ray FeetCast;
     private Ray GrabCast;
     private bool isGrabbing;
+    public bool isGrounded;
     private Rigidbody GrabTarget;
     [SerializeField] private LayerMask FloorHitMask;
     [SerializeField] private LayerMask GrabHitMask;
@@ -42,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         Input.Player.Jump.performed += Jump;
         Input.Player.Attack.performed += Grab;
         Input.Player.Attack.canceled += Grab;
+        //Input.Player.Sprint.performed 
 
 
         
@@ -58,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         //HOR - body 
         Body.localEulerAngles += new Vector3(0, lookDir.x * sensitivity * Time.deltaTime, 0);   
         //VER - camera                          
-        clampedRotation = Mathf.Clamp(clampedRotation - lookDir.y * sensitivity, -90f, 90f);
+        clampedRotation = Mathf.Clamp(clampedRotation - lookDir.y * sensitivity * Time.deltaTime, -90f, 90f);
         CameraTransform.localEulerAngles = new Vector3(clampedRotation, 0f, 0f);
     }
     private void ProcessMovement()
@@ -67,11 +77,18 @@ public class PlayerMovement : MonoBehaviour
 
         float speed = WalkSpeed * (IsSprinting ? SprintMultiplier : 1f);
 
-        Vector3 localMove = new Vector3(MoveInput.x * speed, 0f, MoveInput.y * speed);
+        //half
+        if (!isGrounded) speed *= AirMultiplier;
+        //z check
+        float forwardMult = MoveInput.y >= 0f ? ForwardMultiplier : BackwardMultiplier;
+
+        //both sides equal
+        Vector3 localMove = new Vector3(MoveInput.x * SideMultiplier,0f,MoveInput.y * forwardMult) * speed;
+        //dont surpass speed
+        localMove = Vector3.ClampMagnitude(localMove, speed);
+
         Vector3 worldMove = Body.TransformDirection(localMove);
-
         Rb.linearVelocity = new Vector3(worldMove.x, Rb.linearVelocity.y, worldMove.z);
-
 
     }
 
@@ -80,10 +97,7 @@ public class PlayerMovement : MonoBehaviour
         //needed to follow the anch pos
         FeetCast.origin = transform.position;
         FeetCast.direction = Vector3.down;
-        if (Physics.Raycast(FeetCast, 2f, FloorHitMask))
-        {
-            Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, 20, Rb.linearVelocity.z);
-        }
+        if (isGrounded) Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, 20, Rb.linearVelocity.z);
     }
     private void Grab(InputAction.CallbackContext ctx)
     {
@@ -95,8 +109,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void GrabObject()
     {
-        GrabCast.origin = CameraTransform.position;
-        GrabCast.direction = CameraTransform.forward;
+
         
         if (Physics.Raycast(GrabCast,out RaycastHit hit, 2f, GrabHitMask))
         {
@@ -133,6 +146,10 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        GrabCast.origin = CameraTransform.position;
+        GrabCast.direction = CameraTransform.forward;
+        if (Physics.Raycast(FeetCast, 2f, FloorHitMask)) isGrounded = true;
+        else isGrounded = false;
         ProcessMovement();
         ProcessRotation();
         HoldObject();
