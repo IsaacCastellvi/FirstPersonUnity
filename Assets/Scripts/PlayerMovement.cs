@@ -51,11 +51,9 @@ public class PlayerMovement : MonoBehaviour
         Input.Player.Jump.performed += Jump;
         Input.Player.Attack.performed += Grab;
         Input.Player.Attack.canceled += Grab;
-        //Input.Player.Sprint.performed 
-
-
-        
+        //Input.Player.Sprint.performed    
     }
+
     private void OnDisable() => Input.Disable();
         
     
@@ -142,13 +140,15 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         FeetCast = new Ray(transform.position,-transform.up);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void FixedUpdate()
     {
         GrabCast.origin = CameraTransform.position;
         GrabCast.direction = CameraTransform.forward;
-        if (Physics.Raycast(FeetCast, 2f, FloorHitMask)) isGrounded = true;
+        if (Physics.Raycast(FeetCast, 0.3f, FloorHitMask)) isGrounded = true;
         else isGrounded = false;
         ProcessMovement();
         ProcessRotation();

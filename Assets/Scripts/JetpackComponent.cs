@@ -1,8 +1,10 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JetpackComponent : MonoBehaviour
 {
+    [SerializeField] private Image UiRadial;
     [SerializeField] private float Boost = 0.5f;
     [SerializeField] private float FuelDuration = 1f;
     [SerializeField] private float RecharcheWaitTime = 0.5f;
@@ -49,10 +51,16 @@ public class JetpackComponent : MonoBehaviour
     void Update()
     {
         holdingJump = controls.Player.Jump.IsInProgress();
+        UpdateRadial();
     }
     void FixedUpdate()
     {
         Impulse();
         Recharge();
+    }
+    void UpdateRadial()
+    {
+        if (UiRadial == null) return;
+        UiRadial.fillAmount = fuel;
     }
 }
