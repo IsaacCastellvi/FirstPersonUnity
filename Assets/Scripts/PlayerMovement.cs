@@ -148,8 +148,10 @@ public class PlayerMovement : MonoBehaviour
     {
         GrabCast.origin = CameraTransform.position;
         GrabCast.direction = CameraTransform.forward;
-        if (Physics.Raycast(FeetCast, 0.3f, FloorHitMask)) isGrounded = true;
-        else isGrounded = false;
+        
+        FeetCast.origin = transform.position;
+        FeetCast.direction = Vector3.down;
+        isGrounded = Physics.Raycast(FeetCast, 0.3f, FloorHitMask);
         ProcessMovement();
         ProcessRotation();
         HoldObject();
