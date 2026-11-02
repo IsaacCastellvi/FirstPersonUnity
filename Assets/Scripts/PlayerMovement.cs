@@ -20,7 +20,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float GrabDistance = 5;
     [SerializeField] private float HoldDistance = 2f; 
     [SerializeField] private float PullStrength = 15f;
-    [SerializeField] private float MaxPullSpeed = 20f;
+    [SerializeField] private float MaxPullSpeed = 20f; 
+    [SerializeField] private float JumpImpulse = 5f;
+
 
     [Header("Directional speed")]
     [SerializeField] private float SprintMultiplier = 1;
@@ -95,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         //needed to follow the anch pos
         FeetCast.origin = transform.position;
         FeetCast.direction = Vector3.down;
-        if (isGrounded) Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, 2, Rb.linearVelocity.z);
+        if (isGrounded) Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, JumpImpulse, Rb.linearVelocity.z);
     }
     private void Grab(InputAction.CallbackContext ctx)
     {

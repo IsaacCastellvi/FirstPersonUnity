@@ -937,6 +937,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1236011319879464471, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
+      propertyPath: JumpImpulse
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236011319879464471, guid: 379ecd8b19e27962da7718f9f587914e, type: 3}
       propertyPath: sensitivity
       value: 10
       objectReference: {fileID: 0}
